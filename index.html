@@ -131,9 +131,22 @@
 
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
             margin-top: 2rem;
+        }
+
+        .video-card h2 {
+            padding: 1rem 1rem 0 1rem;
+            font-size: 1.25rem;
+            color: var(--text-sidebar);
+        }
+
+        .video-card iframe {
+            border: none;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            height: auto;
         }
 
         .video-card {
@@ -198,6 +211,10 @@
             aside {
                 display: none;
             }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -237,6 +254,23 @@
                     <h2>Calculo Diferencial</h2>
                     <br>
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/ZSYQ13iMbYA?si=7vCZiHxbigr6cwTw"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+                <div class="video-card">
+                    <h2>Trigonometria</h2>
+                    <br>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/ZyLz5SUMzNY?si=2xYuD1xNJ1IIB-5Y"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-card">
+                    <h2>Geometria</h2>
+                    <br>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/SnBygBMdOKs?si=_Tm9n5ZqfONv-CAe"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
