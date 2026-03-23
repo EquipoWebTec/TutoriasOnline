@@ -1,0 +1,49 @@
+<div id="ingles" class="module-section">
+    <h1>Módulo de Inglés</h1>
+    <p style="color: var(--text-muted)">Aprende inglés con videos y practica con ejercicios.</p>
+
+    <div class="video-grid">
+
+        <div class="video-card">
+            <h2>Saludos en Inglés</h2>
+            <br>
+            <iframe src="https://www.youtube.com/embed/tVlcKp3bWH8" allowfullscreen></iframe>
+        </div>
+
+        <div class="video-card">
+            <h2>Vocabulario Básico</h2>
+            <br>
+            <iframe src="https://www.youtube.com/embed/6H2FR2bJ3yY" allowfullscreen></iframe>
+        </div>
+
+        <div class="video-card">
+            <h2>Pronunciación</h2>
+            <br>
+            <iframe src="https://www.youtube.com/embed/7wUCyjiyXdg" allowfullscreen></iframe>
+        </div>
+
+        <div class="video-card">
+            <h2>Frases Comunes</h2>
+            <br>
+            <iframe src="https://www.youtube.com/embed/dnG0pG0y9nY" allowfullscreen></iframe>
+        </div>
+
+    </div>
+
+    <br><br>
+
+    <!-- EJERCICIOS -->
+    <h2>Ejercicio</h2>
+    <p>Traduce las siguientes palabras:</p>
+
+    <ol>
+       
+
+    <br>
+
+    <!-- BOTÓN -->
+    <button onclick="alert('¡Sigue practicando inglés!')"
+        style="padding:10px 20px; background-color:#3553ff; color:white; border:none; border-radius:8px;">
+        Practicar más
+    </button>
+</div>
