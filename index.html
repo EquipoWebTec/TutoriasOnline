@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,54 +12,137 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', { 'packages': ['geochart'] });
-        google.charts.setOnLoadCallback(drawRegionsMap);
+        google.charts.setOnLoadCallback(drawMap);
 
-        function drawRegionsMap() {
-            var data = google.visualization.arrayToDataTable([
-                ['Country', 'Popularity'],
-                ['Germany', 200],
-                ['United States', 300],
-                ['Brazil', 400],
-                ['Canada', 500],
-                ['France', 600],
-                ['RU', 700],
-                ['Mexico', 800],
-            ]);
+        var currentWar = 'ww2';
 
-            var options = {
-                
-        
-          colorAxis: {colors: ['#00853f', 'black', '#e31b23']},
-          backgroundColor: '#81d4fa',
-          datalessRegionColor: '#f8bbd0',
-          defaultColor: '#f5f5f5',
+        var warData = {
+            ww1: {
+                title: 'Primera Guerra Mundial (1914-1918)',
+                subtitle: 'Bajas militares por pais (en miles)',
+                data: [
+                    ['Country', 'Bajas (miles)', { role: 'tooltip' }],
+                    ['Russia',         1700, 'Rusia: ~1,700,000 bajas'],
+                    ['Germany',        1770, 'Alemania: ~1,770,000 bajas'],
+                    ['France',         1397, 'Francia: ~1,397,000 bajas'],
+                    ['Austria',        1200, 'Austria-Hungria: ~1,200,000 bajas'],
+                    ['United Kingdom', 885,  'Reino Unido: ~885,000 bajas'],
+                    ['Italy',          651,  'Italia: ~651,000 bajas'],
+                    ['Romania',        335,  'Rumania: ~335,000 bajas'],
+                    ['Turkey',         325,  'Imperio Otomano: ~325,000 bajas'],
+                    ['United States',  117,  'Estados Unidos: ~117,000 bajas'],
+                    ['Serbia',         275,  'Serbia: ~275,000 bajas'],
+                    ['Bulgaria',       87,   'Bulgaria: ~87,000 bajas'],
+                    ['Belgium',        58,   'Belgica: ~58,000 bajas'],
+                    ['Canada',         67,   'Canada: ~67,000 bajas'],
+                    ['Australia',      62,   'Australia: ~62,000 bajas'],
+                    ['Greece',         26,   'Grecia: ~26,000 bajas'],
+                    ['Japan',          1,    'Japon: ~1,000 bajas']
+                ],
+                color: ['#fde8c8', '#b84c00'],
+                facts: [
+                    { label: 'Duracion', value: '4 anos y 3 meses' },
+                    { label: 'Muertos totales', value: '~20 millones' },
+                    { label: 'Paises involucrados', value: 'Mas de 30' },
+                    { label: 'Fin oficial', value: 'Tratado de Versalles, 1919' },
+                    { label: 'Primera vez', value: 'Se uso gas venenoso y tanques de guerra' },
+                    { label: 'Detonante', value: 'Asesinato del Archiduque Francisco Fernando' }
+                ]
+            },
+            ww2: {
+                title: 'Segunda Guerra Mundial (1939-1945)',
+                subtitle: 'Bajas militares por pais (en miles)',
+                data: [
+                    ['Country', 'Bajas (miles)', { role: 'tooltip' }],
+                    ['Russia',          8700,  'URSS: ~8,700,000 bajas'],
+                    ['China',           3500,  'China: ~3,500,000 bajas'],
+                    ['Germany',         5533,  'Alemania: ~5,533,000 bajas'],
+                    ['Japan',           2120,  'Japon: ~2,120,000 bajas'],
+                    ['Poland',          240,   'Polonia: ~240,000 bajas'],
+                    ['United States',   418,   'Estados Unidos: ~418,000 bajas'],
+                    ['United Kingdom',  383,   'Reino Unido: ~383,000 bajas'],
+                    ['France',          217,   'Francia: ~217,000 bajas'],
+                    ['Italy',           319,   'Italia: ~319,000 bajas'],
+                    ['Yugoslavia',      446,   'Yugoslavia: ~446,000 bajas'],
+                    ['Romania',         300,   'Rumania: ~300,000 bajas'],
+                    ['Hungary',         300,   'Hungria: ~300,000 bajas'],
+                    ['Australia',       40,    'Australia: ~40,000 bajas'],
+                    ['Canada',          45,    'Canada: ~45,000 bajas'],
+                    ['India',           87,    'India: ~87,000 bajas'],
+                    ['Netherlands',     17,    'Paises Bajos: ~17,000 bajas'],
+                    ['Greece',          20,    'Grecia: ~20,000 bajas'],
+                    ['Finland',         83,    'Finlandia: ~83,000 bajas'],
+                    ['Norway',          10,    'Noruega: ~10,000 bajas'],
+                    ['Belgium',         12,    'Belgica: ~12,000 bajas'],
+                    ['Brazil',          1,     'Brasil: ~1,000 bajas'],
+                    ['South Africa',    9,     'Sudafrica: ~9,000 bajas'],
+                    ['Mexico',          0,     'Mexico: no participo directamente']
+                ],
+                color: ['#dce8f5', '#0c447c'],
+                facts: [
+                    { label: 'Duracion', value: '6 anos (1939-1945)' },
+                    { label: 'Muertos totales', value: '~70-85 millones' },
+                    { label: 'Paises involucrados', value: 'Mas de 50' },
+                    { label: 'Primera bomba atomica', value: 'Hiroshima, 6 agosto 1945' },
+                    { label: 'Consecuencia clave', value: 'Creacion de la ONU en 1945' },
+                    { label: 'Inicio', value: 'Invasion nazi de Polonia, 1 sept. 1939' }
+                ]
+            }
         };
+
+        function drawMap() {
+            var war = warData[currentWar];
+            document.getElementById('war-title').textContent = war.title;
+            document.getElementById('war-subtitle').textContent = war.subtitle;
+
+            var data = google.visualization.arrayToDataTable(war.data);
+            var options = {
+                colorAxis: { colors: war.color },
+                backgroundColor: 'transparent',
+                datalessRegionColor: '#2a3f5a',
+                defaultColor: '#2a3f5a',
+                legend: { textStyle: { color: '#aaa', fontSize: 12 } }
+            };
             var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
             chart.draw(data, options);
+
+            var factsContainer = document.getElementById('facts-grid');
+            factsContainer.innerHTML = '';
+            war.facts.forEach(function(f) {
+                var card = document.createElement('div');
+                card.className = 'fact-card';
+                card.innerHTML =
+                    '<div class="fact-label">' + f.label + '</div>' +
+                    '<div class="fact-value">' + f.value + '</div>';
+                factsContainer.appendChild(card);
+            });
+
+            document.querySelectorAll('.war-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.war === currentWar);
+            });
+        }
+
+        function switchWar(war) {
+            currentWar = war;
+            drawMap();
         }
     </script>
 
     <style>
         :root {
             --primary: #3553ff;
-            --primary-hover: #2c20ff;
             --bg-main: #002a51;
             --bg-sidebar: #8fa3ff;
             --text-main: #f8fafc;
             --text-sidebar: #ffffff;
             --text-muted: #94a3b8;
             --text-muted-sidebar: #ffffff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.07);
             --transition: all 0.3s ease;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
             background-color: var(--bg-main);
@@ -71,13 +153,11 @@
             overflow: hidden;
         }
 
-        h1, h2, h3 {
-            font-family: 'Outfit', sans-serif;
-        }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
 
         aside {
             background-color: var(--bg-sidebar);
-            border-right: 1px solid #000000;
+            border-right: 1px solid #000;
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -85,27 +165,10 @@
             height: 100vh;
         }
 
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+        .logo { font-size: 1.25rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.75rem; }
+        .logo-icon { width: 32px; height: 32px; }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            color: var(--primary);
-        }
-
-        .nav-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+        .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
 
         .nav-item {
             padding: 0.75rem 1rem;
@@ -117,30 +180,13 @@
             cursor: pointer;
         }
 
-        .nav-item:hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: var(--text-sidebar);
-        }
+        .nav-item:hover { background: rgba(0,0,0,0.05); color: var(--text-sidebar); }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
 
-        .nav-item.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
+        main { padding: 2rem; overflow-y: auto; }
 
-        main {
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        .module-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .module-section.active {
-            display: block;
-        }
+        .module-section { display: none; animation: fadeIn 0.5s ease; }
+        .module-section.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -154,19 +200,6 @@
             margin-top: 2rem;
         }
 
-        .video-card h2 {
-            padding: 1rem 1rem 0 1rem;
-            font-size: 1.25rem;
-            color: var(--text-sidebar);
-        }
-
-        .video-card iframe {
-            border: none;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            height: auto;
-        }
-
         .video-card {
             background: var(--glass);
             border-radius: 15px;
@@ -175,38 +208,102 @@
             transition: var(--transition);
         }
 
-        .video-card:hover {
-            transform: scale(1.02);
-            border-color: var(--primary);
+        .video-card:hover { transform: scale(1.02); border-color: var(--primary); }
+
+        .video-card h2 { padding: 1rem 1rem 0 1rem; font-size: 1.25rem; color: var(--text-sidebar); }
+
+        .video-card iframe { border: none; width: 100%; aspect-ratio: 16/9; height: auto; }
+
+        /* Historia */
+        .war-toggle { display: flex; gap: 0.75rem; margin: 1.25rem 0 1rem; }
+
+        .war-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 999px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
         }
+
+        .war-btn:hover { border-color: rgba(255,255,255,0.5); color: white; }
+        .war-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+        #war-title { font-size: 1.05rem; font-weight: 600; color: white; margin-bottom: 0.2rem; }
+        #war-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; }
 
         #regions_div {
             width: 100%;
-            height: 500px;
-            margin-top: 1.5rem;
+            height: 420px;
             border-radius: 12px;
             overflow: hidden;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+        }
+
+        .facts-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        #facts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .fact-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1rem 1rem 0.9rem;
+            transition: var(--transition);
+        }
+
+        .fact-card:hover { background: rgba(255,255,255,0.09); border-color: var(--primary); }
+
+        .fact-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.3rem;
+        }
+
+        .fact-value {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: white;
+            line-height: 1.4;
         }
 
         @media (max-width: 768px) {
             body { grid-template-columns: 1fr; }
             aside { display: none; }
             .video-grid { grid-template-columns: 1fr; }
+            #facts-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
-
 <body>
     <aside>
         <div class="logo">
             <img src="logo.svg" alt="Logo" class="logo-icon">
-            <span class="logo-text">Tutorias Online</span>
+            <span>Tutorias Online</span>
         </div>
         <nav>
             <ul class="nav-list">
-                <li><a onclick="showModule('matematica')" class="nav-item active" id="btn-matematica">Matemáticas</a></li>
-                <li><a onclick="showModule('ingles')" class="nav-item" id="btn-ingles">Inglés</a></li>
-                <li><a onclick="showModule('programacion')" class="nav-item" id="btn-programacion">Programación</a></li>
+                <li><a onclick="showModule('matematica')" class="nav-item active" id="btn-matematica">Matematicas</a></li>
+                <li><a onclick="showModule('ingles')" class="nav-item" id="btn-ingles">Ingles</a></li>
+                <li><a onclick="showModule('programacion')" class="nav-item" id="btn-programacion">Programacion</a></li>
                 <li><a onclick="showModule('Historia')" class="nav-item" id="btn-Historia">Historia</a></li>
             </ul>
         </nav>
@@ -214,97 +311,76 @@
 
     <main>
 
-        <!-- ── Matemáticas ── -->
+        <!-- Matematicas -->
         <div id="matematica" class="module-section active">
-            <h1>Módulo de Matemáticas</h1>
-            <p style="color: var(--text-muted)">Aprende álgebra, cálculo y más con estos tutoriales.</p>
-
+            <h1>Modulo de Matematicas</h1>
+            <p style="color:var(--text-muted)">Aprende algebra, calculo y mas con estos tutoriales.</p>
             <div class="video-grid">
                 <div class="video-card">
                     <h2>Algebra</h2><br>
-                    <iframe src="https://www.youtube.com/embed/_6uyQISZvBc?si=CcB2TELuBDZ1qQ_H"
-                        title="Algebra" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/_6uyQISZvBc?si=CcB2TELuBDZ1qQ_H" title="Algebra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-
                 <div class="video-card">
-                    <h2>Cálculo Diferencial</h2><br>
-                    <iframe src="https://www.youtube.com/embed/ZSYQ13iMbYA?si=7vCZiHxbigr6cwTw"
-                        title="Calculo Diferencial" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <h2>Calculo Diferencial</h2><br>
+                    <iframe src="https://www.youtube.com/embed/ZSYQ13iMbYA?si=7vCZiHxbigr6cwTw" title="Calculo Diferencial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-
                 <div class="video-card">
-                    <h2>Trigonometría</h2><br>
-                    <iframe src="https://www.youtube.com/embed/ZyLz5SUMzNY?si=2xYuD1xNJ1IIB-5Y"
-                        title="Trigonometria" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <h2>Trigonometria</h2><br>
+                    <iframe src="https://www.youtube.com/embed/ZyLz5SUMzNY?si=2xYuD1xNJ1IIB-5Y" title="Trigonometria" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-
                 <div class="video-card">
-                    <h2>Geometría</h2><br>
-                    <iframe src="https://www.youtube.com/embed/SnBygBMdOKs?si=_Tm9n5ZqfONv-CAe"
-                        title="Geometria" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <h2>Geometria</h2><br>
+                    <iframe src="https://www.youtube.com/embed/SnBygBMdOKs?si=_Tm9n5ZqfONv-CAe" title="Geometria" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
 
-        <!-- ── Inglés ── -->
+        <!-- Ingles -->
         <div id="ingles" class="module-section">
-            <h1>Módulo de Inglés</h1>
-            <p style="color: var(--text-muted)">Contenido de inglés próximamente.</p>
+            <h1>Modulo de Ingles</h1>
+            <p style="color:var(--text-muted)">Contenido de ingles proximamente.</p>
         </div>
 
-        <!-- ── Programación ── -->
+        <!-- Programacion -->
         <div id="programacion" class="module-section">
-            <h1>Módulo de Programación</h1>
-            <p style="color: var(--text-muted)">Aprende lógica, lenguajes y más con estos tutoriales.</p>
-
+            <h1>Modulo de Programacion</h1>
+            <p style="color:var(--text-muted)">Aprende logica, lenguajes y mas con estos tutoriales.</p>
             <div class="video-grid">
                 <div class="video-card">
-                    <h2>Introducción a la Programación</h2><br>
-                    <iframe src="https://www.youtube.com/embed/VxrIZGQfxmE"
-                        title="Introduccion a la Programacion" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <h2>Introduccion a la Programacion</h2><br>
+                    <iframe src="https://www.youtube.com/embed/VxrIZGQfxmE" title="Introduccion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-
                 <div class="video-card">
-                    <h2>Lenguajes de Programación</h2><br>
-                    <iframe src="https://www.youtube.com/embed/pqfAvZC5clw"
-                        title="Lenguajes de Programacion" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <h2>Lenguajes de Programacion</h2><br>
+                    <iframe src="https://www.youtube.com/embed/pqfAvZC5clw" title="Lenguajes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-
                 <div class="video-card">
-                    <h2>¿Qué es un Lenguaje de Programación?</h2><br>
-                    <iframe src="https://www.youtube.com/embed/zYrpCPHsRfw?start=335"
-                        title="Que es un lenguaje de programacion" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <h2>Que es un Lenguaje de Programacion</h2><br>
+                    <iframe src="https://www.youtube.com/embed/zYrpCPHsRfw?start=335" title="Que es" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-
                 <div class="video-card">
                     <h2>Aplicaciones para Programar</h2><br>
-                    <iframe src="https://www.youtube.com/embed/wjAmGtDUGgo"
-                        title="Aplicaciones para programar" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/wjAmGtDUGgo" title="Aplicaciones" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
 
-        <!-- ── Historia ── -->
+        <!-- Historia -->
         <div id="Historia" class="module-section">
-            <h1>Módulo de Historia</h1>
-            <p style="color: var(--text-muted)">Aprende historia a través de mapas y recursos interactivos.</p>
+            <h1>Modulo de Historia</h1>
+            <p style="color:var(--text-muted)">Explora las Guerras Mundiales a traves del mapa y datos historicos.</p>
+
+            <div class="war-toggle">
+                <button class="war-btn" data-war="ww1" onclick="switchWar('ww1')">Primera Guerra Mundial</button>
+                <button class="war-btn active" data-war="ww2" onclick="switchWar('ww2')">Segunda Guerra Mundial</button>
+            </div>
+
+            <p id="war-title"></p>
+            <p id="war-subtitle"></p>
             <div id="regions_div"></div>
+
+            <p class="facts-section-title">Datos curiosos</p>
+            <div id="facts-grid"></div>
         </div>
 
     </main>
@@ -315,13 +391,10 @@
             document.querySelector('.nav-item.active').classList.remove('active');
             document.getElementById(id).classList.add('active');
             document.getElementById('btn-' + id).classList.add('active');
-
-            // Redibujar el mapa al mostrar la sección de Historia
             if (id === 'Historia') {
-                google.charts.setOnLoadCallback(drawRegionsMap);
+                google.charts.setOnLoadCallback(drawMap);
             }
         }
     </script>
 </body>
-
 </html>
