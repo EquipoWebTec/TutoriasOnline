@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -231,6 +238,13 @@
                 </li>
                 <li><a onclick="showModule('ingles')" class="nav-item" id="btn-ingles">Inglés</a></li>
                 <li><a onclick="showModule('programacion')" class="nav-item" id="btn-programacion">Programación</a></li>
+                <li style="margin-top: auto; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1rem;">
+                    <a href="logout.php" class="nav-item" style="color: #ef4444;">
+                        <span style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i>🚪</i> Cerrar Sesión
+                        </span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
